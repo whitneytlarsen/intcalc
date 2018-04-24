@@ -13,31 +13,42 @@ main:
     @ driver function main lives here, modify this for your other functions
 loop:
 	/*prompt for operand 1*/
-	sub	sp, sp, #12
+	mov	r0, sp
+	mov	r1, #12
+	bl	intsub
+	mov	sp, r0
 	ldr	r0, =prompt1
 	bl	printf
 	/*put user answer onto stack*/
+	mov	r1, sp
 	ldr	r0, =scannum
-	add	r1, sp, #8
 	bl	scanf
 	/*prompt for operand 2*/
 	ldr	r0, =prompt2
 	bl	printf
 	/*put user answer onto stack*/
+	mov	r0, sp
+	mov	r1, #4
+	bl	intadd
+	mov	r1, r0
 	ldr	r0, =scannum
-	add	r1, sp, #4
 	bl	scanf
 	/*prompt for operation*/
 	ldr	r0, =prompt3
 	bl	printf
 	/*put user answer onto stack*/
+	mov	r0, sp
+	mov	r1, #8
+	bl	intadd
+	mov	r1, r0
 	ldr	r0, =scanchar
-	mov	r1, sp
 	bl	scanf
-	ldr	r0, [sp, #8] /*operand 1 in r0*/
-	ldr	r1, [sp, #4] /*operand 2 in r1*/
-	ldr	r2, [sp] /*operation in r2*/
-	add	sp, sp, #12 /*deallocate space on stack*/
+	ldrb	r0, [sp]
+	ldrb	r1, [sp, #4]
+	ldrb	r2, [sp, #8]
+	pop	{r3}
+	pop	{r3}
+	pop	{r3}
 if:
 	/*check if operation is '+'*/
 	ldr	r3, =add
@@ -64,6 +75,9 @@ secondelse:
 	b	print
 finalelse:
 	/*report invalid operation*/
+	ldr	r0, =printchar
+	mov	r1, r2
+	bl	printf
 	ldr	r0, =invalid
 	bl	printf
 	b	askrepeat
@@ -78,14 +92,20 @@ askrepeat:
     @ You'll need to scan characters for the operation and to determine
     @ if the program should repeat.
     @ To scan a character, and compare it to another, do the following
+	mov	r0, sp
+	mov	r1, #4
+	bl	intsub
+	mov	sp, r0
       ldr     r0, =scanchar
-      sub     sp, sp, #4
       mov     r1, sp          @ Save stack pointer to r1, you must create space
       bl      scanf           @ Scan user's answer
+	mov	r0, sp
+	mov	r1, #4
+	bl	intadd
+	mov	sp, r0
       ldr     r1, =yes        @ Put address of 'y' in r1
       ldrb    r1, [r1]        @ Load the actual character 'y' into r1
-      ldrb    r0, [sp]
-      add     sp, sp, #4        @ Put the user's value in r0
+      ldrb	r0, [sp, #-4]        @ Put the user's value in r0
       cmp     r0, r1          @ Compare user's answer to char 'y'
       beq     loop              @ branch to appropriate location
       pop     {pc}
@@ -106,6 +126,10 @@ mul:
     .byte   '*'
 scanchar:
     .asciz  " %c"
+printchar:
+	.asciz  "Operation Entered Was: %x"
+printhex:
+	.asciz	"Entered %x"
 prompt1:
     .asciz  "Enter Number 1: "
 prompt2:
