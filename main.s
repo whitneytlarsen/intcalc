@@ -126,10 +126,6 @@ mul:
     .byte   '*'
 scanchar:
     .asciz  " %c"
-printchar:
-	.asciz  "Operation Entered Was: %x"
-printhex:
-	.asciz	"Entered %x"
 prompt1:
     .asciz  "Enter Number 1: "
 prompt2:
