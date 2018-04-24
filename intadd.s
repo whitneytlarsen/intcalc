@@ -3,11 +3,12 @@
     @ Template file for Lab 3
     @ Whitney Larsen
 
-    .arch armv7
+    .arch armv7a
     .fpu vfp 
 
     @ --------------------------------
     .global intadd
+
 intadd: /*operand 1 in r0, operand 2 in r1*/
 	/*saving register 4, and the link register to the stack*/
 	push 	{r4, lr} 

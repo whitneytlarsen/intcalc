@@ -3,7 +3,7 @@
     @ Template file for Lab 3
     @ Whitney Larsen
 
-    .arch armv7
+    .arch armv7a
     .fpu vfp 
 
     @ --------------------------------
