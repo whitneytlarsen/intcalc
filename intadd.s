@@ -31,3 +31,5 @@ end:
 	eor	r0, r0, r1
 	/*restore r4 and go back to caller*/
 	pop	{r4, pc}
+
+

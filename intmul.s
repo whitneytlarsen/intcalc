@@ -17,10 +17,10 @@ intmul: /*multiplicand in r0, multiplier in r1*/
 
 loop:
 	cmp	r5, #0 /*if the multiplier is #0, branch to the end*/
-	beq	end
-	ands	r1, r4, #1
+	beq	cleanup
+	ands	r1, r5, #1
 	beq	endif
-	mov	r5, r1
+	mov	r1, r4
 	bl	intadd
 
 endif:
@@ -28,5 +28,5 @@ endif:
 	lsr	r5, #1
 	b	loop
 
-end:
+cleanup:
 	pop	{r4, r5, pc}
