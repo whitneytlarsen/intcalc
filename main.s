@@ -10,7 +10,6 @@
     .global main
 main:
     @ driver function main lives here, modify this for your other functions
-	push	{lr}
 loop:
 	/*prompt for operand 1*/
 	sub	sp, sp, #12
@@ -84,7 +83,8 @@ askrepeat:
       bl      scanf           @ Scan user's answer
       ldr     r1, =yes        @ Put address of 'y' in r1
       ldrb    r1, [r1]        @ Load the actual character 'y' into r1
-      ldrb    r0, [sp]        @ Put the user's value in r0
+      ldrb    r0, [sp]
+      add     sp, sp, #4        @ Put the user's value in r0
       cmp     r0, r1          @ Compare user's answer to char 'y'
       beq     loop              @ branch to appropriate location
     @ this only works for character scans. You'll need a different
@@ -112,7 +112,7 @@ prompt3:
 result:
     .asciz  "Result is: %d"
 again:
-    .asciz  "Again? "
+    .asciz  "\nAgain? "
 scannum:
     .asciz  " %d"
 invalid:

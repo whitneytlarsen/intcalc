@@ -19,10 +19,10 @@ loop:
 	beq	end
 	/*if op1 AND op2 is not 0, left shift to get the carries as they'll be applied*/
 	lsl	r4, r4, #1
-	/*xor op1 and op2 gives the result without carries*/
+	/*exlusive or op1 and op2 gives the result without carries*/
 	eor	r1, r0, r1
 	/*add the carries and the result without carries to get the final result*/
-	mov	r4, r0
+	mov	r0, r4
 	b	loop
 	
 
